@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+sqlmodel
+geoalchemy2
+shapely
+asyncpg
+psycopg2-binary
+pydantic
+python-jose
+passlib
+greenlet
