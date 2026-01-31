@@ -7,7 +7,8 @@ const DEV_API_URL = Platform.select({
     default: 'http://127.0.0.1:8000',
 });
 
-export const API_URL = process.env.EXPO_PUBLIC_API_URL || DEV_API_URL;
+// Hardcoded for V1 Release stability
+export const API_URL = 'https://velocity-api-x1m0.onrender.com';
 
 interface GpsPoint {
     lat: number;
