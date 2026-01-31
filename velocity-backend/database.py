@@ -2,8 +2,15 @@ from sqlmodel import SQLModel, create_engine
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
 
-# Database URL as specified
-DATABASE_URL = "postgresql+asyncpg://postgres:password123@localhost:5433/velocity_db"
+import os
+
+# Database URL: Use Env Var (Render) or Default (Local)
+DATABASE_URL = os.environ.get("DATABASE_URL", "postgresql+asyncpg://postgres:password123@localhost:5433/velocity_db")
+
+# SQLAlchemy requires 'postgresql://', Render gives 'postgres://'
+if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql+asyncpg://", 1)
+
 
 # Create Async Engine
 engine = create_async_engine(DATABASE_URL, echo=True, future=True)
