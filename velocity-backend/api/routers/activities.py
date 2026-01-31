@@ -49,19 +49,37 @@ def points_to_linestring(points: List[GPSPoint]) -> str:
     return f"LINESTRING({coords_str})"
 
 
-@router.post("/upload", response_model=ActivityResponse)
-async def upload_activity(data: ActivityUpload, session: AsyncSession = Depends(get_session)):
-    """
-    Ingest raw GPS points, calculate stats server-side, and save activity to PostGIS.
-    """
-    if len(data.points) < 2:
+@router.post("/upload", response_model=Activity)
+async def upload_activity(
+    activity_data: ActivityCreate, 
+    session: AsyncSession = Depends(get_session)
+):
+    # 1. Check if user exists (Auto-Fix for V1 Demo)
+    user = await session.get(User, activity_data.user_id)
+    if not user:
+        print(f"User {activity_data.user_id} not found. Creating default user for Demo.")
+        new_user = User(
+            id=activity_data.user_id,
+            username="velocity_runner",
+            email="runner@velocity.app",
+            full_name="Velocity Runner",
+            created_at=datetime.utcnow()
+        )
+        session.add(new_user)
+        await session.commit() # Save the user first
+
+    # 2. Convert Data Points to LineString
+    points = activity_data.points
+    if not points:
+        raise HTTPException(status_code=400, detail="No GPS points provided")
+    
+    if len(points) < 2:
         raise HTTPException(status_code=400, detail="Need at least 2 points to create an activity")
         
     # 1. Calculate Stats
-    coords = [(p.lat, p.lon) for p in data.points]
+    coords = [(p.lat, p.lon) for p in points]
     total_distance_km = calculate_haversine_distance(coords)
     
-    start_time = data.points[0].timestamp or datetime.utcnow()
     end_time = data.points[-1].timestamp or datetime.utcnow()
     # Basic moving time calc
     moving_time_seconds = int((end_time - start_time).total_seconds()) if data.points[0].timestamp else 0
