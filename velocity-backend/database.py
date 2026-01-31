@@ -17,8 +17,14 @@ elif DATABASE_URL.startswith("postgresql://") and not DATABASE_URL.startswith("p
 # Create Async Engine
 engine = create_async_engine(DATABASE_URL, echo=True, future=True)
 
+from sqlalchemy import text
+
+# ... (imports)
+
 async def init_db():
     async with engine.begin() as conn:
+        # Enable PostGIS (Required for Geometry columns)
+        await conn.execute(text("CREATE EXTENSION IF NOT EXISTS postgis;"))
         # await conn.run_sync(SQLModel.metadata.drop_all)
         await conn.run_sync(SQLModel.metadata.create_all)
 
