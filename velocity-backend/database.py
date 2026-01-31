@@ -7,9 +7,11 @@ import os
 # Database URL: Use Env Var (Render) or Default (Local)
 DATABASE_URL = os.environ.get("DATABASE_URL", "postgresql+asyncpg://postgres:password123@localhost:5433/velocity_db")
 
-# SQLAlchemy requires 'postgresql://', Render gives 'postgres://'
-if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
+# Ensure we use the async driver
+if DATABASE_URL.startswith("postgres://"):
     DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql+asyncpg://", 1)
+elif DATABASE_URL.startswith("postgresql://") and not DATABASE_URL.startswith("postgresql+asyncpg://"):
+    DATABASE_URL = DATABASE_URL.replace("postgresql://", "postgresql+asyncpg://", 1)
 
 
 # Create Async Engine
