@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { Heart, Timer } from 'lucide-react-native';
+import { Heart, Timer, Clock, Flame } from 'lucide-react-native';
 import { COLORS, FONTS } from '../../constants/theme';
 
 interface MetricGridProps {
@@ -15,24 +15,32 @@ export default function MetricGrid({ pace, time, calories }: MetricGridProps) {
             <View style={styles.gridItem}>
                 <View style={styles.iconLabel}>
                     <Timer size={20} color={COLORS.textDim} />
-                    <Text style={styles.gridLabel}>PACE</Text>
+                    <Text style={styles.gridLabel}>AVG PACE</Text>
                 </View>
                 <Text style={styles.gridValue}>{pace}</Text>
                 <Text style={styles.unit}>/km</Text>
             </View>
 
-            </View>
-
-            <View style={styles.gridItem}>
-                <Text style={styles.gridLabel}>TIME</Text>
+            <View style={[styles.gridItem, styles.gridItemRight]}>
+                <View style={styles.iconLabel}>
+                    <Clock size={20} color={COLORS.textDim} />
+                    <Text style={styles.gridLabel}>TIME</Text>
+                </View>
                 <Text style={styles.gridValue}>{time}</Text>
             </View>
 
-            <View style={[styles.gridItem, styles.gridItemRight]}>
-                <Text style={styles.gridLabel}>KCAL</Text>
+            <View style={styles.gridItem}>
+                <View style={styles.iconLabel}>
+                    <Flame size={20} color={COLORS.textDim} />
+                    <Text style={styles.gridLabel}>CALORIES</Text>
+                </View>
                 <Text style={styles.gridValue}>{calories}</Text>
+                <Text style={styles.unit}>KCAL</Text>
             </View>
-        </View >
+
+            {/* Empty fourth slot */}
+            <View style={[styles.gridItem, styles.gridItemRight]} />
+        </View>
     );
 }
 
