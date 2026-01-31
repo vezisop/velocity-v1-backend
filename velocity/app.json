@@ -1,17 +1,38 @@
 {
-  "expo": {
-    "name": "Velocity",
-    "slug": "velocity",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "userInterfaceStyle": "dark",
-    "backgroundColor": "#0F172A",
-    "scheme": "velocity",
-    "plugins": [
-      "expo-router",
-      "expo-font",
-      "expo-web-browser"
-    ],
-    "newArchEnabled": true
-  }
+    "expo": {
+        "name": "Velocity",
+        "slug": "velocity",
+        "version": "1.0.0",
+        "orientation": "portrait",
+        "userInterfaceStyle": "dark",
+        "backgroundColor": "#0F172A",
+        "scheme": "velocity",
+        "plugins": [
+            "expo-router",
+            "expo-font",
+            "expo-web-browser",
+            [
+                "expo-location",
+                {
+                    "locationAlwaysAndWhenInUsePermission": "Allow Velocity to track your run route and distance.",
+                    "locationAlwaysPermission": "Allow Velocity to track your run route and distance.",
+                    "locationWhenInUsePermission": "Allow Velocity to track your run route and distance."
+                }
+            ]
+        ],
+        "newArchEnabled": true,
+        "extra": {
+            "router": {},
+            "eas": {
+                "projectId": "dee552bd-66e4-4256-95a7-2e761b23d3ec"
+            }
+        },
+        "android": {
+            "package": "com.vezisop.velocity",
+            "permissions": [
+                "ACCESS_COARSE_LOCATION",
+                "ACCESS_FINE_LOCATION"
+            ]
+        }
+    }
 }

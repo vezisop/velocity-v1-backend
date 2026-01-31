@@ -5,12 +5,11 @@ import { COLORS, FONTS } from '../../constants/theme';
 
 interface MetricGridProps {
     pace: string;
-    heartRate: number;
     time: string;
     calories: number;
 }
 
-export default function MetricGrid({ pace, heartRate, time, calories }: MetricGridProps) {
+export default function MetricGrid({ pace, time, calories }: MetricGridProps) {
     return (
         <View style={styles.grid}>
             <View style={styles.gridItem}>
@@ -22,13 +21,6 @@ export default function MetricGrid({ pace, heartRate, time, calories }: MetricGr
                 <Text style={styles.unit}>/km</Text>
             </View>
 
-            <View style={[styles.gridItem, styles.gridItemRight]}>
-                <View style={styles.iconLabel}>
-                    <Heart size={20} color={COLORS.textDim} />
-                    <Text style={styles.gridLabel}>HEART RATE</Text>
-                </View>
-                <Text style={styles.gridValue}>{heartRate}</Text>
-                <Text style={styles.unit}>BPM</Text>
             </View>
 
             <View style={styles.gridItem}>
@@ -40,7 +32,7 @@ export default function MetricGrid({ pace, heartRate, time, calories }: MetricGr
                 <Text style={styles.gridLabel}>KCAL</Text>
                 <Text style={styles.gridValue}>{calories}</Text>
             </View>
-        </View>
+        </View >
     );
 }
 

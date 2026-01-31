@@ -13,7 +13,7 @@ import MetricGrid from './dashboard/MetricGrid';
 import SlideToFinish from './dashboard/SlideToFinish';
 
 export default function ActiveDashboard() {
-    const { isFinished, metrics, finishWorkout } = useWorkout();
+    const { isActive, isFinished, metrics, startWorkout, finishWorkout } = useWorkout();
 
     if (isFinished) {
         return (
@@ -36,22 +36,40 @@ export default function ActiveDashboard() {
                     {/* Header */}
                     <LiveHeader />
 
-                    {/* Main Metric - Distance */}
-                    <View style={styles.mainMetric}>
-                        <Text style={styles.mainValue}>{metrics.distance}</Text>
-                        <Text style={styles.mainLabel}>KILOMETERS</Text>
-                    </View>
+                    {!isActive ? (
+                        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                            <View
+                                onTouchEnd={startWorkout}
+                                style={{
+                                    width: 200, height: 200, borderRadius: 100,
+                                    backgroundColor: COLORS.primary,
+                                    justifyContent: 'center', alignItems: 'center',
+                                    shadowColor: COLORS.primary, shadowOpacity: 0.5, shadowRadius: 20
+                                }}
+                            >
+                                <Text style={{ fontFamily: FONTS.black, fontSize: 32, color: 'white' }}>START</Text>
+                            </View>
+                            <Text style={{ marginTop: 20, color: COLORS.textDim, fontFamily: FONTS.medium }}>TAP TO START RUN</Text>
+                        </View>
+                    ) : (
+                        <>
+                            {/* Main Metric - Distance */}
+                            <View style={styles.mainMetric}>
+                                <Text style={styles.mainValue}>{metrics.distance}</Text>
+                                <Text style={styles.mainLabel}>KILOMETERS</Text>
+                            </View>
 
-                    {/* Secondary Metrics Grid */}
-                    <MetricGrid
-                        pace={metrics.pace}
-                        heartRate={metrics.heartRate}
-                        time={metrics.time}
-                        calories={metrics.calories}
-                    />
+                            {/* Secondary Metrics Grid */}
+                            <MetricGrid
+                                pace={metrics.pace}
+                                time={metrics.time}
+                                calories={metrics.calories}
+                            />
 
-                    {/* Slide to Finish */}
-                    <SlideToFinish onFinish={finishWorkout} />
+                            {/* Slide to Finish */}
+                            <SlideToFinish onFinish={finishWorkout} />
+                        </>
+                    )}
                 </SafeAreaView>
             </View>
         </GestureHandlerRootView>
